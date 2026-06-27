@@ -19,8 +19,8 @@ import type {
   ModelSelection,
   ProviderConfig,
   SelectionRole,
+  VoiceSettings,
 } from "@/types/agent";
-
 const DEFAULT_BASE_URL: Record<string, string> = {
   openai: "https://api.openai.com/v1",
   anthropic: "https://api.anthropic.com",
@@ -91,7 +91,13 @@ export default function Settings() {
   // User-defined system instructions (custom system prompt).
   const [systemInstructions, setSystemInstructions] = useState("");
   const [savingInstructions, setSavingInstructions] = useState(false);
-
+  // Voice feature API keys (TTS / STT / Voice-to-Voice).
+  const [voiceSettings, setVoiceSettings] = useState<VoiceSettings>({
+    tts_api_key: "",
+    stt_api_key: "",
+    voice_to_voice_api_key: "",
+  });
+  const [savingVoice, setSavingVoice] = useState(false);
   const refresh = async () => {
     const res = await agentTauriService.listProviders();
     setProviders(res.providers);
@@ -107,6 +113,7 @@ export default function Settings() {
         setContextEngine(ce);
         setCuratedModels(await agentTauriService.listModels());
         setSystemInstructions(await agentTauriService.getSystemInstructions());
+        setVoiceSettings(await agentTauriService.getVoiceSettings());
         const mode = await agentTauriService.engineMode();
         setEngineMode(mode);
         if (mode === "app") {
@@ -496,6 +503,21 @@ export default function Settings() {
     }
   };
 
+  const saveVoiceSettings = async () => {
+    setSavingVoice(true);
+    try {
+      await agentTauriService.setVoiceSettings({
+        tts_api_key: voiceSettings.tts_api_key.trim(),
+        stt_api_key: voiceSettings.stt_api_key.trim(),
+        voice_to_voice_api_key: voiceSettings.voice_to_voice_api_key.trim(),
+      });
+      themedMessage.success("Voice API keys saved");
+    } catch {
+      themedMessage.error("Failed to save voice API keys");
+    } finally {
+      setSavingVoice(false);
+    }
+  };
   const handleSelect = async (role: SelectionRole, value: string | undefined) => {
     if (!value) return;
     const { providerId, model } = parseValue(value);
@@ -755,6 +777,71 @@ export default function Settings() {
             <Button type="primary" onClick={saveInstructions} loading={savingInstructions} className="mb-8">
               Save instructions
             </Button>
+
+            {/* Voice API keys (TTS / STT / Voice-to-Voice) */}
+            <h2 className="text-base font-semibold text-[var(--text-primary)] mb-1">Voice API keys</h2>
+            <p className="text-sm text-[var(--text-secondary)] mb-4">
+              Keys for the optional voice features. Each is stored locally and used only for its service.
+            </p>
+            <div className="flex flex-col gap-5 border border-[var(--border)] rounded-lg p-5 mb-8">
+              <div>
+                <label className="block text-xs text-[var(--text-secondary)] mb-1">
+                  Text-to-Speech (TTS)
+                  {voiceSettings.tts_api_key.trim() && <span className="text-green-500"> · saved</span>}
+                </label>
+                <Input.Password
+                  value={voiceSettings.tts_api_key}
+                  onChange={(e) => setVoiceSettings({ ...voiceSettings, tts_api_key: e.target.value })}
+                  onPressEnter={saveVoiceSettings}
+                  placeholder="sk-…"
+                />
+                <div className="mt-1.5 text-[11px] text-[var(--text-secondary)]">
+                  Used to synthesize spoken audio from the agent's responses.
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs text-[var(--text-secondary)] mb-1">
+                  Speech-to-Text (STT)
+                  {voiceSettings.stt_api_key.trim() && <span className="text-green-500"> · saved</span>}
+                </label>
+                <Input.Password
+                  value={voiceSettings.stt_api_key}
+                  onChange={(e) => setVoiceSettings({ ...voiceSettings, stt_api_key: e.target.value })}
+                  onPressEnter={saveVoiceSettings}
+                  placeholder="sk-…"
+                />
+                <div className="mt-1.5 text-[11px] text-[var(--text-secondary)]">
+                  Used to transcribe your microphone input into text.
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs text-[var(--text-secondary)] mb-1">
+                  Voice-to-Voice
+                  {voiceSettings.voice_to_voice_api_key.trim() && (
+                    <span className="text-green-500"> · saved</span>
+                  )}
+                </label>
+                <Input.Password
+                  value={voiceSettings.voice_to_voice_api_key}
+                  onChange={(e) =>
+                    setVoiceSettings({ ...voiceSettings, voice_to_voice_api_key: e.target.value })
+                  }
+                  onPressEnter={saveVoiceSettings}
+                  placeholder="sk-…"
+                />
+                <div className="mt-1.5 text-[11px] text-[var(--text-secondary)]">
+                  Used for real-time, low-latency spoken conversations.
+                </div>
+              </div>
+
+              <div>
+                <Button type="primary" onClick={saveVoiceSettings} loading={savingVoice}>
+                  Save voice keys
+                </Button>
+              </div>
+            </div>
 
             {/* MCP servers (Model Context Protocol tool providers) */}
             <h2 className="text-base font-semibold text-[var(--text-primary)] mb-1">MCP servers</h2>

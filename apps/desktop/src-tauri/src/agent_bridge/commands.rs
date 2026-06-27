@@ -316,6 +316,48 @@ pub async fn agent_set_system_instructions(
     app_state.db.set_setting(SYSTEM_INSTRUCTIONS_KEY, &content)
 }
 
+// ── Voice settings (TTS / STT / Voice-to-Voice API keys) ─────────────────────
+
+const VOICE_SETTINGS_KEY: &str = "voice_settings";
+
+/// API keys for the optional voice features. Empty strings mean "not configured".
+#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
+pub struct VoiceSettings {
+    #[serde(default)]
+    pub tts_api_key: String,
+    #[serde(default)]
+    pub stt_api_key: String,
+    #[serde(default)]
+    pub voice_to_voice_api_key: String,
+}
+
+/// Read the saved voice settings (all-empty default when unset/corrupt).
+fn read_voice_settings(app_state: &AppState) -> VoiceSettings {
+    app_state
+        .db
+        .get_setting(VOICE_SETTINGS_KEY)
+        .ok()
+        .flatten()
+        .and_then(|raw| serde_json::from_str(&raw).ok())
+        .unwrap_or_default()
+}
+
+#[tauri::command]
+pub async fn agent_get_voice_settings(
+    app_state: State<'_, AppState>,
+) -> Result<VoiceSettings, String> {
+    Ok(read_voice_settings(&app_state))
+}
+
+#[tauri::command]
+pub async fn agent_set_voice_settings(
+    settings: VoiceSettings,
+    app_state: State<'_, AppState>,
+) -> Result<(), String> {
+    let raw = serde_json::to_string(&settings).map_err(|e| e.to_string())?;
+    app_state.db.set_setting(VOICE_SETTINGS_KEY, &raw)
+}
+
 // ── MCP servers (Model Context Protocol tool providers) ──────────────────────
 
 const MCP_SERVERS_KEY: &str = "mcp_servers";

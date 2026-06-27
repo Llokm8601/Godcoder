@@ -352,6 +352,18 @@ export interface ContextEngineSettings {
   base_url: string;
 }
 
+/** API keys for the optional voice features: text-to-speech, speech-to-text
+ *  and live voice-to-voice. Each key is stored locally and used only for its
+ *  respective service. Empty string means "not configured". */
+export interface VoiceSettings {
+  /** Text-to-Speech (TTS) provider API key. */
+  tts_api_key: string;
+  /** Speech-to-Text (STT) provider API key. */
+  stt_api_key: string;
+  /** Voice-to-Voice (real-time speech) provider API key. */
+  voice_to_voice_api_key: string;
+}
+
 /** Live connection probe result for the Settings panel. */
 export interface ContextEngineStatus {
   connected: boolean;

@@ -652,6 +652,8 @@ pub fn run() {
             agent_bridge::ollama::ollama_import_gguf,
             agent_bridge::commands::agent_get_system_instructions,
             agent_bridge::commands::agent_set_system_instructions,
+            agent_bridge::commands::agent_get_voice_settings,
+            agent_bridge::commands::agent_set_voice_settings,
             agent_bridge::commands::agent_list_mcp_servers,
             agent_bridge::commands::agent_save_mcp_server,
             agent_bridge::commands::agent_delete_mcp_server,

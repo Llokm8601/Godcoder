@@ -20,6 +20,7 @@ import type {
   ProvidersResponse,
   SelectionRole,
   SessionRow,
+  VoiceSettings,
 } from '../types/agent';
 import type { Attachment } from '../types/chat';
 import type {
@@ -262,6 +263,15 @@ export const agentTauriService = {
 
   async setSystemInstructions(content: string): Promise<void> {
     return invoke<void>('agent_set_system_instructions', { content });
+  },
+
+  // ── Voice settings (TTS / STT / Voice-to-Voice API keys) ─────────────
+  async getVoiceSettings(): Promise<VoiceSettings> {
+    return invoke<VoiceSettings>('agent_get_voice_settings');
+  },
+
+  async setVoiceSettings(settings: VoiceSettings): Promise<void> {
+    return invoke<void>('agent_set_voice_settings', { settings });
   },
 
   // ── MCP servers (Model Context Protocol tool providers) ──────────────

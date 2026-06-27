@@ -43,3 +43,8 @@ Thumbs.db
 
 # Tauri generated
 apps/*/src-tauri/gen/
+
+# Local model downloads (large; not part of the repo)
+Qwen/
+*.safetensors
+*.gguf
