@@ -23,6 +23,8 @@ instead of guessing.
 - Plug in your own model provider through OpenAI-compatible or Anthropic-compatible
   endpoints, with no hosted middleman required.
 - Extend the toolset with **MCP servers** over stdio, streamable HTTP, or SSE.
+- Configure **voice API keys** (Text-to-Speech, Speech-to-Text, and
+  Voice-to-Voice) from Settings, stored locally on your machine.
 - Optionally enable the local **Context Engine** for repo-scale semantic and
   structural search over large codebases.
 - Keep the workflow **local-first** with tool approval controls, subagents, and
@@ -78,6 +80,9 @@ npm run tauri:dev      # development
 # or
 npm run tauri:build    # produce a release bundle
 ```
+
+On Windows you can also double-click [`launch-godcoder.bat`](./launch-godcoder.bat)
+in the repo root — it puts Cargo on the `PATH` and starts the app for you.
 
 On first launch, open **Settings** and add an LLM provider (`base_url` +
 `api_key` + `model`). Then create a session, pick a folder and a mode, and go.
