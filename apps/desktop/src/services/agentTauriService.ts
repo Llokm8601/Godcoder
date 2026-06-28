@@ -74,6 +74,11 @@ export const agentTauriService = {
     return invoke<CloudFolder[]>('agent_list_local_drives');
   },
 
+  /** The GodCoder repo root — default working folder for Harness mode. */
+  async defaultHarnessFolder(): Promise<string> {
+    return invoke<string>('agent_default_harness_folder');
+  },
+
   async renameSession(sessionId: string, title: string): Promise<void> {
     return invoke<void>('agent_rename_session', { sessionId, title });
   },

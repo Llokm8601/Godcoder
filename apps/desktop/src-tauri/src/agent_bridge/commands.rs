@@ -232,6 +232,32 @@ fn default_providers() -> Vec<ProviderConfig> {
             model_meta: std::collections::HashMap::new(),
             supports_images: false,
         },
+        // Local Qwen2.5-Coder default coding agent, served by Ollama over its
+        // OpenAI-compatible endpoint (http://localhost:11434/v1). Ollama is the
+        // viable local runtime on commodity hardware (CPU + small GPUs); the
+        // raw FP16 safetensors under Qwen/ require a large GPU + vLLM instead
+        // (see tools/serve-qwen.ps1 for that advanced path).
+        // Pre-populating `models` makes this the default for new sessions
+        // (default_session_model picks the first provider with a model) without
+        // touching the saved global selection or the UI. Self-heals like the
+        // built-ins: re-seeded if removed, but fully overridable in Settings.
+        ProviderConfig {
+            id: "qwen-local".to_string(),
+            kind: "ollama".to_string(),
+            label: "Qwen2.5-Coder (local)".to_string(),
+            base_url: "http://localhost:11434/v1".to_string(),
+            api_key: "ollama".to_string(),
+            models: vec!["qwen2.5-coder:7b-instruct".to_string()],
+            model_meta: {
+                let mut m = std::collections::HashMap::new();
+                m.insert(
+                    "qwen2.5-coder:7b-instruct".to_string(),
+                    ModelMeta { context_length: Some(32_768), supports_images: false },
+                );
+                m
+            },
+            supports_images: false,
+        },
     ]
 }
 
@@ -914,11 +940,11 @@ fn build_agent_config(
         }
     }
 
-    // Freestyle mode: full autonomy + a higher iteration cap. The autonomy
-    // directive lives in the dedicated `freestyle_prompt.txt` system prompt
-    // (selected by `build_system_prompt`); tool auto-approval is enforced
-    // separately when building the approval handler.
-    if mode == ToolMode::Freestyle {
+    // Freestyle and Harness modes: full autonomy + a higher iteration cap. The
+    // autonomy directive lives in the dedicated system prompt (selected by
+    // `build_system_prompt`); tool auto-approval is enforced separately when
+    // building the approval handler.
+    if mode == ToolMode::Freestyle || mode == ToolMode::Harness {
         config.max_iterations = config.max_iterations.max(250);
     }
 
@@ -1238,6 +1264,7 @@ fn parse_mode(mode: &str) -> ToolMode {
         "plan" => ToolMode::Plan,
         "coding" => ToolMode::Coding,
         "freestyle" => ToolMode::Freestyle,
+        "harness" => ToolMode::Harness,
         _ => ToolMode::Ask,
     }
 }
@@ -1352,6 +1379,20 @@ pub fn agent_list_local_drives() -> Vec<CloudFolder> {
         });
     }
     out
+}
+
+/// The default working folder for Harness mode: the GodCoder repository root,
+/// where the agent builds and self-optimizes its own harness (it contains the
+/// `default-skills` and the ResearchSwarm bridge). Resolved from the crate
+/// manifest dir (`…/apps/desktop/src-tauri`) by walking up three levels.
+#[tauri::command]
+pub fn agent_default_harness_folder() -> String {
+    let manifest = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+    manifest
+        .ancestors()
+        .nth(3)
+        .map(|p| p.to_string_lossy().to_string())
+        .unwrap_or_else(|| manifest.to_string_lossy().to_string())
 }
 
 // ── Session lifecycle ──────────────────────────────────────────────────────
@@ -1730,9 +1771,9 @@ async fn run_agent_turn(
         });
     }
     let mut perm_config = load_permission_config(app_state, Some(&folder));
-    // Freestyle mode: auto-approve every tool call regardless of the project's
-    // saved permission level.
-    if mode == ToolMode::Freestyle {
+    // Freestyle and Harness modes: auto-approve every tool call regardless of
+    // the project's saved permission level.
+    if mode == ToolMode::Freestyle || mode == ToolMode::Harness {
         perm_config = crate::agent_bridge::permissions::PermissionConfig {
             project_path: None,
             level: crate::agent_bridge::permissions::PermissionLevel::AutoApproveAll,
@@ -1786,7 +1827,7 @@ async fn run_agent_turn(
     let user_msg = build_user_message(&message, attachments).await;
 
     let event_rx = match mode {
-        ToolMode::Coding | ToolMode::Freestyle => manager
+        ToolMode::Coding | ToolMode::Freestyle | ToolMode::Harness => manager
             .start_coding_session(
                 session_id.clone(),
                 config,

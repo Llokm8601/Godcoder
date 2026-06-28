@@ -7,6 +7,7 @@ import {
   Map as MapIcon,
   SquareCode,
   Zap,
+  Repeat,
   Pencil,
   Trash2,
   ChevronDown,
@@ -28,6 +29,7 @@ const MODE_ICON: Record<string, typeof MessageCircle> = {
   plan: MapIcon,
   coding: SquareCode,
   freestyle: Zap,
+  harness: Repeat,
 };
 
 /** Modes offered when starting a new session, in display order. */
@@ -36,6 +38,7 @@ const NEW_SESSION_MODES: { mode: string; label: string; desc: string }[] = [
   { mode: "plan", label: "Plan", desc: "Draft a plan, no edits" },
   { mode: "coding", label: "Coding", desc: "Edit with approvals" },
   { mode: "freestyle", label: "Freestyle", desc: "Full autonomy, auto-approved" },
+  { mode: "harness", label: "Harness", desc: "Self-optimizing harness, real-time" },
 ];
 
 export default function SessionListSidebar() {
@@ -167,7 +170,7 @@ export default function SessionListSidebar() {
                     aria-label={`Open ${folderName(folder)}`}
                     onClick={() => openSession(items[0])}
                     className={`relative w-8 h-8 flex items-center justify-center rounded-md text-white text-xs font-semibold ${hasActive ? "ring-2 ring-blue-500" : ""}`}
-                    style={{ backgroundColor: getAvatarColor(folder) }}
+                    ref={(el) => { if (el) el.style.backgroundColor = getAvatarColor(folder); }}
                   >
                     {folderName(folder).charAt(0).toUpperCase()}
                     {needsApproval && (
@@ -240,7 +243,7 @@ export default function SessionListSidebar() {
                   )}
                   <span
                     className="w-5 h-5 flex items-center justify-center rounded text-white text-[10px] font-semibold shrink-0"
-                    style={{ backgroundColor: getAvatarColor(folder) }}
+                    ref={(el) => { if (el) el.style.backgroundColor = getAvatarColor(folder); }}
                   >
                     {folderName(folder).charAt(0).toUpperCase()}
                   </span>

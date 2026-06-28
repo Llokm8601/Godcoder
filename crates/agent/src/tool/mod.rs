@@ -218,6 +218,10 @@ pub enum ToolMode {
     /// Freestyle mode: same full tool suite as Coding, run with full autonomy
     /// (tool calls auto-approved by the host).
     Freestyle,
+    /// Harness mode: same full tool suite + full autonomy as Freestyle, run as a
+    /// self-optimizing loop that builds and continuously improves the agent
+    /// harness in real time (see `harness_prompt.txt`).
+    Harness,
 }
 
 /// Registry of available tools.
@@ -260,7 +264,7 @@ impl ToolRegistry {
                 registry.register(Arc::new(grep::GrepTool));
                 registry.register(Arc::new(ask_user::AskUserTool));
             }
-            ToolMode::Coding | ToolMode::Freestyle => {
+            ToolMode::Coding | ToolMode::Freestyle | ToolMode::Harness => {
                 registry.register(Arc::new(read::ReadTool));
                 registry.register(Arc::new(write::WriteTool));
                 registry.register(Arc::new(bash::BashTool));

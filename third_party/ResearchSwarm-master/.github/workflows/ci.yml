@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  lint-and-build:
+    name: Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Set up Python 3.11
+        run: uv python install 3.11
+
+      - name: Install lightweight deps (no torch/CUDA)
+        run: uv pip install --python 3.11 numpy pandas requests tiktoken rustbpe
+
+      - name: Smoke-test classifier (PYTHONPATH=.)
+        env:
+          PYTHONPATH: .
+        run: python3 -c "from researchswarm_agent import DigitalCognitiveLaborAgent; a=DigitalCognitiveLaborAgent(); r=a.classify_task('run training'); print('Classifier OK:', r.domain.value)"
+
+      - name: Smoke-test memory store (PYTHONPATH=.)
+        env:
+          PYTHONPATH: .
+        run: python3 -c "import tempfile,os; from researchswarm_memory import ResearchSwarmMemoryStore; s=ResearchSwarmMemoryStore(os.path.join(tempfile.mkdtemp(),'t.db')); s.record_event('r','t',{}); print('Memory OK:', len(s.get_recent_context()))"
+
+      - name: Validate pyproject.toml
+        run: python3 -c "import tomllib; d=tomllib.loads(open('pyproject.toml').read()); print('pyproject OK:', d['project']['name'], d['project']['version'])"

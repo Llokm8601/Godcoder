@@ -38,7 +38,7 @@ Your Machine ──► Model Provider (OpenAI / Anthropic / Any OpenAI-compatibl
 
 | Feature | Description |
 |---|---|
-| 🧠 **Ask / Plan / Coding Modes** | Three levels of autonomy — from answering questions to fully autonomous coding |
+| 🧠 **Ask / Plan / Coding / Freestyle / Harness Modes** | From answering questions to fully autonomous coding — and self-building its own harness |
 | 📝 **In-place File Editing** | Edit files, review diffs, rewind to checkpoints, continue from previous turns |
 | 🖥️ **Interactive Terminal** | Built-in terminal, file explorer, and session history |
 | 🔌 **Any LLM Provider** | Plug in OpenAI, Anthropic, or any OpenAI-compatible endpoint — no proxy needed |
@@ -46,6 +46,33 @@ Your Machine ──► Model Provider (OpenAI / Anthropic / Any OpenAI-compatibl
 | 🎙️ **Voice API Integration** | Configure TTS, STT, and Voice-to-Voice from Settings — stored locally |
 | 🔍 **Graph-Aware Code Search** | Optional Context Engine: semantic + structural search over large codebases |
 | 🔒 **Tool Approval Controls** | Deliberate execution with subagents, skills, and approval gates |
+| 🔁 **Self-optimizing Harness** | One-click **Harness** mode builds & improves its own agent harness in real time |
+
+---
+
+## 🔁 Self-optimizing AI Agent Harness
+
+**Harness mode** turns Godcoder loose on its own agent harness. Pick **Harness**
+in the new-session composer and press start — no prompt to type and no folder to
+choose. On launch the agent sets up a **contained sandbox**: it creates a
+dedicated `harness-build/` folder, **opens it in your system file explorer**, and
+confines all of its new work there — reading the rest of the repo for reference
+but never rewriting it. It then runs a full-autonomy, real-time improvement loop:
+
+> **route → plan → execute → evaluate → log → optimize → repeat**
+
+Each iteration makes one decisive change, verifies it with the project's own
+checks, keeps it only if it's an improvement, and records the outcome so the
+harness compounds knowledge over time and biases toward higher-success
+approaches. Like Freestyle, every tool call is auto-approved (you confirm the
+first time).
+
+The loop is backed by the **`self-optimizing-harness`** default skill
+([`crates/agent/default-skills/`](./crates/agent/default-skills)) and a
+**ResearchSwarm bridge**
+([`third_party/ResearchSwarm-master/godcoder_harness.py`](./third_party/ResearchSwarm-master/godcoder_harness.py))
+exposing `route` / `log` / `recall` / `optimize` over a persistent memory store,
+so lessons from past runs rank and steer future iterations.
 
 ---
 
@@ -60,6 +87,8 @@ crates/
   git-ops/             Checkpoint / diff / restore over the working tree
 services/
   context-engine/      Optional Go indexing service (tree-sitter → Qdrant + FalkorDB + BM25)
+third_party/
+  ResearchSwarm-master/  Self-optimizing harness memory + bridge (Harness mode)
 v1/                    Legacy 2024 codegen pipeline — frozen
 ```
 
@@ -135,6 +164,7 @@ Then enable `Settings → Context engine` in the app. Full instructions: [servic
 - [ ] **Benchmark harness** — headless runner over the same agent core, with reproducible per-task sandboxes to measure the harness across models and validate graph-retrieval localization
 - [ ] **Broader provider support** — the provider abstraction is built to grow
 - [x] Ask / Plan / Coding modes
+- [x] Self-optimizing Harness mode (builds its own agent harness)
 - [x] Checkpoint & rewind
 - [x] MCP server support
 - [x] Voice API integration

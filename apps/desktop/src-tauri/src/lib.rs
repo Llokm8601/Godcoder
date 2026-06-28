@@ -689,6 +689,7 @@ pub fn run() {
             agent_bridge::commands::agent_rewind_to_message,
             agent_bridge::commands::agent_detect_cloud_folders,
             agent_bridge::commands::agent_list_local_drives,
+            agent_bridge::commands::agent_default_harness_folder,
         ])
         .build(tauri::generate_context!())
         .expect("error while building tauri application")

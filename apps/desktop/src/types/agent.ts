@@ -180,7 +180,7 @@ export interface AgentDisplayMessage {
 
 // --- Session (from the `sessions` table via Tauri) ---
 
-export type SessionMode = 'ask' | 'plan' | 'coding' | 'freestyle';
+export type SessionMode = 'ask' | 'plan' | 'coding' | 'freestyle' | 'harness';
 
 /** A quick-access source folder: a synced cloud drive or a local drive root. */
 export interface CloudFolder {

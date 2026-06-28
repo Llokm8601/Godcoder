@@ -802,6 +802,13 @@ body {
   color: var(--foreground-rgb) !important;
 }
 
+/* Slash-command picker popover above the agent composer. Keeps the themed
+   background/shadow out of inline styles. */
+.command-picker-dropdown {
+  background-color: var(--dropdown-bg);
+  box-shadow: var(--dropdown-boxshadow);
+}
+
 .ant-select-item-option {
   color: var(--foreground-rgb) !important;
   font-size: 14px !important;
